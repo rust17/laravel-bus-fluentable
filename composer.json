@@ -1,0 +1,27 @@
+{
+    "name": "circle33/laravel-bus-fluentable",
+    "description": "Make Laravel testing batched jobs more fluent.",
+    "keywords" : [
+        "laravel",
+        "laravel-bus-fluentable"
+    ],
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Circle33\\LaravelBusFluentable\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "circle33",
+            "email": "newnash13@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require-dev": {
+        "laravel/framework": "^11.35",
+        "phpunit/phpunit": "^11.5",
+        "orchestra/testbench-core": "^9.8"
+    }
+}
