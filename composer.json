@@ -23,5 +23,8 @@
         "laravel/framework": "^11.35",
         "phpunit/phpunit": "^11.5",
         "orchestra/testbench-core": "^9.8"
+    },
+    "scripts": {
+        "test": "./vendor/bin/phpunit"
     }
 }
