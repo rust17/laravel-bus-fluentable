@@ -227,10 +227,6 @@ BusFacade::assertPendingBatched(fn (PendingBatchFake $batch) =>
 
 Thank you for considering contributing to this project! We welcome and appreciate your help.
 
-## How to Contribute
-
-### Fork the Repository
-
 1. Fork the repository to your GitHub account.
 2. Clone your forked repository to your local machine:
     ```sh
