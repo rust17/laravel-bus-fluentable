@@ -3,14 +3,28 @@
 namespace Circle33\LaravelBusFluentable;
 
 use Circle33\LaravelBusFluentable\FluentPendingBatch;
+use Illuminate\Support\Testing\Fakes\BusFake;
+use Illuminate\Contracts\Bus\Dispatcher;
+use PHPUnit\Framework\Assert as PHPUnit;
 
 class Bus
 {
+    /**
+     * Assert that a batch was dispatched based on a callback.
+     *
+     * @param  callable  $callback
+     * @return void
+     */
     public static function assertPendingBatched(callable $callback)
     {
-        $dispatcher = app(\Illuminate\Contracts\Bus\Dispatcher::class);
+        /** @var BusFake $busFake */
+        $busFake = app(Dispatcher::class);
 
-        return collect($dispatcher->dispatchedBatches())
-            ->filter(fn ($batch) => $callback(new FluentPendingBatch($dispatcher, $batch->jobs)));
+        PHPUnit::assertTrue(
+            collect($busFake->dispatchedBatches())
+                ->filter(fn ($batch) => $callback(new FluentPendingBatch($busFake, $batch->jobs)))
+                ->isNotEmpty(),
+            "The expected batch was not dispatched."
+        );
     }
 }

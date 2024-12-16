@@ -18,6 +18,7 @@ Assert that the batch contains a job of the given type. You can also pass an int
 
 ```php
 use Circle33\LaravelBusFluentable\Bus as BusFacade;
+use Circle33\LaravelBusFluentable\FluentPendingBatch;
 
 Bus::fake();
 
@@ -26,7 +27,7 @@ Bus::batch([
     new BJob,
 ])->dispatch();
 
-BusFacade::assertPendingBatched(fn (PendingBatchFake $batch) =>
+BusFacade::assertPendingBatched(fn (FluentPendingBatch $batch) =>
     $batch->has(2)
         ->has(AJob::class, [1, 2])
 );
@@ -40,6 +41,7 @@ Assert that the batch does not contain a job of the given type.
 
 ```php
 use Circle33\LaravelBusFluentable\Bus as BusFacade;
+use Circle33\LaravelBusFluentable\FluentPendingBatch;
 
 Bus::fake();
 
@@ -47,7 +49,7 @@ Bus::batch([
     new BJob,
 ])->dispatch();
 
-BusFacade::assertPendingBatched(fn (PendingBatchFake $batch) =>
+BusFacade::assertPendingBatched(fn (FluentPendingBatch $batch) =>
     $batch->missing(AJob::class)
 );
 ```
@@ -60,6 +62,7 @@ Assert that the batch contains all of the given jobs.
 
 ```php
 use Circle33\LaravelBusFluentable\Bus as BusFacade;
+use Circle33\LaravelBusFluentable\FluentPendingBatch;
 
 Bus::fake();
 
@@ -68,7 +71,7 @@ Bus::batch([
     new BJob,
 ])->dispatch();
 
-BusFacade::assertPendingBatched(fn (PendingBatchFake $batch) =>
+BusFacade::assertPendingBatched(fn (FluentPendingBatch $batch) =>
     $batch->hasAll([AJob::class, BJob::class])
 );
 ```
@@ -81,6 +84,7 @@ Assert that the batch does not contain any of the given jobs.
 
 ```php
 use Circle33\LaravelBusFluentable\Bus as BusFacade;
+use Circle33\LaravelBusFluentable\FluentPendingBatch;
 
 Bus::fake();
 
@@ -89,7 +93,7 @@ Bus::batch([
     new BJob,
 ])->dispatch();
 
-BusFacade::assertPendingBatched(fn (PendingBatchFake $batch) =>
+BusFacade::assertPendingBatched(fn (FluentPendingBatch $batch) =>
     $batch->missingAll([CJob::class, DJob::class])
 );
 ```
@@ -102,6 +106,7 @@ Assert that the batch contains any of the given jobs.
 
 ```php
 use Circle33\LaravelBusFluentable\Bus as BusFacade;
+use Circle33\LaravelBusFluentable\FluentPendingBatch;
 
 Bus::fake();
 
@@ -110,7 +115,7 @@ Bus::batch([
     new BJob,
 ])->dispatch();
 
-BusFacade::assertPendingBatched(fn (PendingBatchFake $batch) =>
+BusFacade::assertPendingBatched(fn (FluentPendingBatch $batch) =>
     $batch->hasAny(AJob::class, CJob::class)
 );
 ```
@@ -123,6 +128,7 @@ Assert that the first job in the batch matches the given callback.
 
 ```php
 use Circle33\LaravelBusFluentable\Bus as BusFacade;
+use Circle33\LaravelBusFluentable\FluentPendingBatch;
 
 Bus::fake();
 
@@ -134,7 +140,7 @@ Bus::batch([
     new CJob,
 ])->dispatch();
 
-BusFacade::assertPendingBatched(fn (PendingBatchFake $batch) =>
+BusFacade::assertPendingBatched(fn (FluentPendingBatch $batch) =>
     $batch->first(fn (PendingBatchFake $firstBatch) =>
         $firstBatch->has(AJob::class, [1, 2])
             ->has(BJob::class)
@@ -150,6 +156,7 @@ Assert that the nth job in the batch matches the given callback or type and para
 
 ```php
 use Circle33\LaravelBusFluentable\Bus as BusFacade;
+use Circle33\LaravelBusFluentable\FluentPendingBatch;
 
 Bus::fake();
 
@@ -161,8 +168,8 @@ Bus::batch([
     new CJob::class(1)
 ])->dispatch();
 
-BusFacade::assertPendingBatched(fn (PendingBatchFake $batch) =>
-    $batch->nth(0, fn (PendingBatchFake $batch) =>
+BusFacade::assertPendingBatched(fn (FluentPendingBatch $batch) =>
+    $batch->nth(0, fn (FluentPendingBatch $batch) =>
         $batch->has(AJob::class, [1, 2])
             ->has(BJob::class)
     )->nth(1, CJob::class, [1])
@@ -177,6 +184,7 @@ Assert that the batch contains exactly the given jobs with the specified paramet
 
 ```php
 use Circle33\LaravelBusFluentable\Bus as BusFacade;
+use Circle33\LaravelBusFluentable\FluentPendingBatch;
 
 Bus::fake();
 
@@ -188,7 +196,7 @@ Bus::batch([
     new CJob::class(1)
 ])->dispatch();
 
-BusFacade::assertPendingBatched(fn (PendingBatchFake $batch) =>
+BusFacade::assertPendingBatched(fn (FluentPendingBatch $batch) =>
     $batch->equal([
         [
             AJob::class => [1, 2],
@@ -207,6 +215,7 @@ Assert that the batch has unexpected jobs beyond those checked.
 
 ```php
 use Circle33\LaravelBusFluentable\Bus as BusFacade;
+use Circle33\LaravelBusFluentable\FluentPendingBatch;
 
 Bus::fake();
 
@@ -216,7 +225,7 @@ Bus::batch([
     new CJob::class(1)
 ])->dispatch();
 
-BusFacade::assertPendingBatched(fn (PendingBatchFake $batch) =>
+BusFacade::assertPendingBatched(fn (FluentPendingBatch $batch) =>
     $batch->has(AJob::class, [1, 2])
         ->has(BJob::class)
         ->etc()
