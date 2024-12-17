@@ -1,4 +1,4 @@
-# Laravel Bus Fluentable
+# Laravel Bus Fluentable <img src="./bus.png" width="30px" style="border-radius: 50%;" />
 
 [![PHPUnit](https://github.com/rust17/laravel-bus-fluentable/actions/workflows/phpunit.yml/badge.svg)](https://github.com/rust17/laravel-bus-fluentable/actions/workflows/phpunit.yml)
 [![Static Analysis](https://github.com/rust17/laravel-bus-fluentable/actions/workflows/phpstan.yml/badge.svg)](https://github.com/rust17/laravel-bus-fluentable/actions/workflows/phpstan.yml)
