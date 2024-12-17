@@ -1,4 +1,4 @@
-name: static analysis
+name: Static Analysis
 
 on: [push]
 
@@ -10,7 +10,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: PHPStan
-        uses: docker://oskarstark/phpstan-ga
-        with:
-          args: analyse
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: Run PHPStan
+        run: vendor/bin/phpstan analyse

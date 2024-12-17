@@ -1,4 +1,4 @@
-name: check style
+name: Check Style
 
 on: [push]
 
