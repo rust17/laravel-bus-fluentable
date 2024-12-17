@@ -1,0 +1,31 @@
+name: PHPUnit
+
+on: [push]
+
+jobs:
+  phpunit:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php_version: [8.1, 8.2, 8.3]
+        prefer:
+          - stable
+          - lowest
+
+    name: PHP-${{ matrix.php_version }}-${{ matrix.prefer }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: Run PHPUnit
+        run: vendor/bin/phpunit
