@@ -37,7 +37,8 @@ class FluentPendingBatch extends PendingBatchFake
         }
 
         PHPUnit::assertTrue(
-            $this->jobs->contains(fn ($job) => get_class($job) === $expectedJob &&
+            $this->jobs->contains(
+                fn ($job) => get_class($job) === $expectedJob &&
                     $this->parametersMatch($job, $expectedJob, $expectedParameters)
             ),
             "The batch does not contain a job of type [{$expectedJob}]."
@@ -147,9 +148,11 @@ class FluentPendingBatch extends PendingBatchFake
             throw new $e('The first one in the batch does not matches the given callback: '.$e->getMessage());
         }
 
-        array_push($this->expected, is_array($firstJob) ?
-            array_map(fn ($job) => get_class($job), $firstJob) :
-            get_class($firstJob)
+        array_push(
+            $this->expected,
+            is_array($firstJob) ?
+                array_map(fn ($job) => get_class($job), $firstJob) :
+                get_class($firstJob)
         );
 
         return $this;
@@ -186,9 +189,11 @@ class FluentPendingBatch extends PendingBatchFake
                 ));
             }
 
-            array_push($this->expected, is_array($nthJob) ?
-                array_map(fn ($job) => get_class($job), $nthJob) :
-                get_class($nthJob)
+            array_push(
+                $this->expected,
+                is_array($nthJob) ?
+                    array_map(fn ($job) => get_class($job), $nthJob) :
+                    get_class($nthJob)
             );
         }
 
@@ -269,9 +274,10 @@ class FluentPendingBatch extends PendingBatchFake
         $expectedJobs = array_map('serialize', $this->expected);
 
         $actualJobs = $this->jobs->map(
-            fn ($job) => serialize(is_array($job) ?
-                array_map(fn ($j) => get_class($j), $job) :
-                get_class($job)
+            fn ($job) => serialize(
+                is_array($job) ?
+                    array_map(fn ($j) => get_class($j), $job) :
+                    get_class($job)
             )
         )->toArray();
 

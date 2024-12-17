@@ -2,12 +2,12 @@
 
 namespace Circle33\LaravelBusFluentable\Tests;
 
+use Circle33\LaravelBusFluentable\Bus as BusFacade;
+use Circle33\LaravelBusFluentable\FluentPendingBatch;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
-use Circle33\LaravelBusFluentable\FluentPendingBatch;
-use Orchestra\Testbench\TestCase;
 use Illuminate\Support\Facades\Bus;
-use Circle33\LaravelBusFluentable\Bus as BusFacade;
+use Orchestra\Testbench\TestCase;
 use PHPUnit\Framework\AssertionFailedError;
 
 class FluentPendingBatchTest extends TestCase
@@ -18,12 +18,13 @@ class FluentPendingBatchTest extends TestCase
 
         Bus::batch([
             new AJob(1, 2),
-            new BJob,
-            new CJob,
-            new DJob,
+            new BJob(),
+            new CJob(),
+            new DJob(),
         ])->dispatch();
 
-        BusFacade::assertPendingBatched(fn (FluentPendingBatch $assert) => $assert->has(AJob::class, [1, 2])
+        BusFacade::assertPendingBatched(
+            fn (FluentPendingBatch $assert) => $assert->has(AJob::class, [1, 2])
                 ->has(BJob::class)
                 ->has(CJob::class)
                 ->etc()
@@ -36,7 +37,7 @@ class FluentPendingBatchTest extends TestCase
 
         Bus::batch([
             new AJob(1, 2),
-            new BJob,
+            new BJob(),
         ])->dispatch();
 
         $this->expectException(AssertionFailedError::class);
@@ -53,7 +54,7 @@ class FluentPendingBatchTest extends TestCase
 
         Bus::batch([
             new AJob(1, 2),
-            new BJob,
+            new BJob(),
         ])->dispatch();
 
         $this->expectException(AssertionFailedError::class);
@@ -70,7 +71,7 @@ class FluentPendingBatchTest extends TestCase
 
         Bus::batch([
             new AJob(1, 2),
-            new BJob,
+            new BJob(),
         ])->dispatch();
 
         $this->expectException(AssertionFailedError::class);
@@ -86,11 +87,12 @@ class FluentPendingBatchTest extends TestCase
         Bus::fake();
 
         Bus::batch([
-            new AJob,
-            new CJob,
+            new AJob(),
+            new CJob(),
         ])->dispatch();
 
-        BusFacade::assertPendingBatched(fn (FluentPendingBatch $assert) => $assert->has(AJob::class)
+        BusFacade::assertPendingBatched(
+            fn (FluentPendingBatch $assert) => $assert->has(AJob::class)
                 ->missing(BJob::class)
         );
     }
@@ -100,8 +102,8 @@ class FluentPendingBatchTest extends TestCase
         Bus::fake();
 
         Bus::batch([
-            new AJob,
-            new CJob,
+            new AJob(),
+            new CJob(),
         ])->dispatch();
 
         $this->expectException(AssertionFailedError::class);
@@ -117,8 +119,8 @@ class FluentPendingBatchTest extends TestCase
         Bus::fake();
 
         Bus::batch([
-            new AJob,
-            new BJob,
+            new AJob(),
+            new BJob(),
         ])->dispatch();
 
         BusFacade::assertPendingBatched(fn (FluentPendingBatch $assert) => $assert->hasAll([AJob::class, BJob::class]));
@@ -129,8 +131,8 @@ class FluentPendingBatchTest extends TestCase
         Bus::fake();
 
         Bus::batch([
-            new BJob,
-            new CJob,
+            new BJob(),
+            new CJob(),
         ])->dispatch();
 
         $this->expectException(AssertionFailedError::class);
@@ -144,8 +146,8 @@ class FluentPendingBatchTest extends TestCase
         Bus::fake();
 
         Bus::batch([
-            new AJob,
-            new BJob,
+            new AJob(),
+            new BJob(),
         ])->dispatch();
 
         BusFacade::assertPendingBatched(fn (FluentPendingBatch $assert) => $assert->missingAll([CJob::class, DJob::class]));
@@ -156,8 +158,8 @@ class FluentPendingBatchTest extends TestCase
         Bus::fake();
 
         Bus::batch([
-            new AJob,
-            new BJob,
+            new AJob(),
+            new BJob(),
         ])->dispatch();
 
         $this->expectException(AssertionFailedError::class);
@@ -171,11 +173,12 @@ class FluentPendingBatchTest extends TestCase
         Bus::fake();
 
         Bus::batch([
-            new AJob,
-            new CJob,
+            new AJob(),
+            new CJob(),
         ])->dispatch();
 
-        BusFacade::assertPendingBatched(fn (FluentPendingBatch $assert) => $assert->has(2)
+        BusFacade::assertPendingBatched(
+            fn (FluentPendingBatch $assert) => $assert->has(2)
                 ->has(AJob::class)
                 ->hasAny(BJob::class, CJob::class, DJob::class)
         );
@@ -186,7 +189,7 @@ class FluentPendingBatchTest extends TestCase
         Bus::fake();
 
         Bus::batch([
-            new AJob,
+            new AJob(),
         ])->dispatch();
 
         $this->expectException(AssertionFailedError::class);
@@ -211,13 +214,17 @@ class FluentPendingBatchTest extends TestCase
             ],
         ])->dispatch();
 
-        BusFacade::assertPendingBatched(fn (FluentPendingBatch $assert) => $assert->has(3)
-                ->first(fn (FluentPendingBatch $assert) => $assert->has(AJob::class, [1])
-                    ->has(BJob::class, [1])
+        BusFacade::assertPendingBatched(
+            fn (FluentPendingBatch $assert) => $assert->has(3)
+                ->first(
+                    fn (FluentPendingBatch $assert) => $assert->has(AJob::class, [1])
+                        ->has(BJob::class, [1])
                 )
                 ->nth(1, fn (FluentPendingBatch $assert) => $assert->has(CJob::class, [2]))
-                ->nth(2, fn (FluentPendingBatch $assert) => $assert->has(CJob::class, [2])
-                    ->has(DJob::class, [2])
+                ->nth(
+                    2,
+                    fn (FluentPendingBatch $assert) => $assert->has(CJob::class, [2])
+                        ->has(DJob::class, [2])
                 )
         );
     }
@@ -239,10 +246,12 @@ class FluentPendingBatchTest extends TestCase
             'The first one in the batch does not matches the given callback: The batch does not contain a job of type [Circle33\LaravelBusFluentable\Tests\CJob]'
         );
 
-        BusFacade::assertPendingBatched(fn (FluentPendingBatch $assert) => $assert->first(fn (FluentPendingBatch $assert) => $assert->has(2)
-                        ->has(BJob::class, [1])
-                        ->has(CJob::class, [2])
-        )
+        BusFacade::assertPendingBatched(
+            fn (FluentPendingBatch $assert) => $assert->first(
+                fn (FluentPendingBatch $assert) => $assert->has(2)
+                    ->has(BJob::class, [1])
+                    ->has(CJob::class, [2])
+            )
         );
     }
 
@@ -256,7 +265,8 @@ class FluentPendingBatchTest extends TestCase
             new CJob(1),
         ])->dispatch();
 
-        BusFacade::assertPendingBatched(fn (FluentPendingBatch $assert) => $assert->nth(0, AJob::class, [0, 1])
+        BusFacade::assertPendingBatched(
+            fn (FluentPendingBatch $assert) => $assert->nth(0, AJob::class, [0, 1])
                 ->nth(1, BJob::class, [1])
                 ->nth(2, CJob::class, [1])
         );
@@ -313,9 +323,10 @@ class FluentPendingBatchTest extends TestCase
             'The batch does not contain a job of type [Circle33\LaravelBusFluentable\Tests\DJob] at index [2].'
         );
 
-        BusFacade::assertPendingBatched(fn (FluentPendingBatch $assert) => $assert->nth(0, AJob::class, [0, 1])
-            ->nth(1, BJob::class, [1])
-            ->nth(2, DJob::class, [1])
+        BusFacade::assertPendingBatched(
+            fn (FluentPendingBatch $assert) => $assert->nth(0, AJob::class, [0, 1])
+                ->nth(1, BJob::class, [1])
+                ->nth(2, DJob::class, [1])
         );
     }
 
@@ -419,14 +430,14 @@ class FluentPendingBatchTest extends TestCase
             new AJob(1),
             [
                 new BJob(2, 3),
-                new CJob,
+                new CJob(),
                 new DJob(4),
             ],
             [
                 new AJob(1, 2),
-                new BJob,
+                new BJob(),
             ],
-            new CJob,
+            new CJob(),
         ])->dispatch();
 
         BusFacade::assertPendingBatched(fn (FluentPendingBatch $assert) => $assert->equal([
@@ -452,7 +463,7 @@ class FluentPendingBatchTest extends TestCase
             new AJob(1),
             [
                 new BJob(2, 3),
-                new CJob,
+                new CJob(),
                 new DJob(4),
             ],
         ])->dispatch();
@@ -476,7 +487,7 @@ class FluentPendingBatchTest extends TestCase
             new AJob(1),
             [
                 new BJob(2, 3),
-                new CJob,
+                new CJob(),
                 new DJob(4),
             ],
         ])->dispatch();
@@ -498,16 +509,17 @@ class FluentPendingBatchTest extends TestCase
         Bus::fake();
 
         Bus::batch([
-            new AJob,
-            new BJob,
-            new CJob,
-            new DJob,
+            new AJob(),
+            new BJob(),
+            new CJob(),
+            new DJob(),
         ])->dispatch();
 
-        BusFacade::assertPendingBatched(fn (FluentPendingBatch $assert) => $assert->has(AJob::class)
-            ->has(BJob::class)
-            ->has(CJob::class)
-            ->etc()
+        BusFacade::assertPendingBatched(
+            fn (FluentPendingBatch $assert) => $assert->has(AJob::class)
+                ->has(BJob::class)
+                ->has(CJob::class)
+                ->etc()
         );
     }
 
@@ -516,16 +528,17 @@ class FluentPendingBatchTest extends TestCase
         Bus::fake();
 
         Bus::batch([
-            new AJob,
-            new BJob,
-            new CJob,
-            new DJob,
+            new AJob(),
+            new BJob(),
+            new CJob(),
+            new DJob(),
         ])->dispatch();
 
-        BusFacade::assertPendingBatched(fn (FluentPendingBatch $assert) => $assert->has(CJob::class)
-            ->has(AJob::class)
-            ->has(BJob::class)
-            ->etc()
+        BusFacade::assertPendingBatched(
+            fn (FluentPendingBatch $assert) => $assert->has(CJob::class)
+                ->has(AJob::class)
+                ->has(BJob::class)
+                ->etc()
         );
     }
 
@@ -534,18 +547,19 @@ class FluentPendingBatchTest extends TestCase
         Bus::fake();
 
         Bus::batch([
-            new AJob,
-            new BJob,
-            new AJob,
-            new CJob,
-            new DJob,
+            new AJob(),
+            new BJob(),
+            new AJob(),
+            new CJob(),
+            new DJob(),
         ])->dispatch();
 
-        BusFacade::assertPendingBatched(fn (FluentPendingBatch $assert) => $assert->has(AJob::class)
-            ->has(BJob::class)
-            ->has(AJob::class)
-            ->has(CJob::class)
-            ->etc()
+        BusFacade::assertPendingBatched(
+            fn (FluentPendingBatch $assert) => $assert->has(AJob::class)
+                ->has(BJob::class)
+                ->has(AJob::class)
+                ->has(CJob::class)
+                ->etc()
         );
     }
 
@@ -554,20 +568,21 @@ class FluentPendingBatchTest extends TestCase
         Bus::fake();
 
         Bus::batch([
-            new AJob,
-            new BJob,
-            new AJob,
-            new BJob,
-            new CJob,
-            new DJob,
+            new AJob(),
+            new BJob(),
+            new AJob(),
+            new BJob(),
+            new CJob(),
+            new DJob(),
         ])->dispatch();
 
-        BusFacade::assertPendingBatched(fn (FluentPendingBatch $assert) => $assert->has(AJob::class)
-            ->has(BJob::class)
-            ->has(AJob::class)
-            ->has(BJob::class)
-            ->has(CJob::class)
-            ->etc()
+        BusFacade::assertPendingBatched(
+            fn (FluentPendingBatch $assert) => $assert->has(AJob::class)
+                ->has(BJob::class)
+                ->has(AJob::class)
+                ->has(BJob::class)
+                ->has(CJob::class)
+                ->etc()
         );
     }
 
@@ -576,18 +591,19 @@ class FluentPendingBatchTest extends TestCase
         Bus::fake();
 
         Bus::batch([
-            new AJob,
-            new BJob,
-            new AJob,
-            new CJob,
-            new DJob,
+            new AJob(),
+            new BJob(),
+            new AJob(),
+            new CJob(),
+            new DJob(),
         ])->dispatch();
 
-        BusFacade::assertPendingBatched(fn (FluentPendingBatch $assert) => $assert->has(BJob::class)
-            ->has(AJob::class)
-            ->has(CJob::class)
-            ->has(AJob::class)
-            ->etc()
+        BusFacade::assertPendingBatched(
+            fn (FluentPendingBatch $assert) => $assert->has(BJob::class)
+                ->has(AJob::class)
+                ->has(CJob::class)
+                ->has(AJob::class)
+                ->etc()
         );
     }
 
@@ -596,16 +612,17 @@ class FluentPendingBatchTest extends TestCase
         Bus::fake();
 
         Bus::batch([
-            new AJob,
-            new BJob,
+            new AJob(),
+            new BJob(),
         ])->dispatch();
 
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage('There are no additional jobs in the batch.');
 
-        BusFacade::assertPendingBatched(fn (FluentPendingBatch $assert) => $assert->has(AJob::class)
-            ->has(BJob::class)
-            ->etc()
+        BusFacade::assertPendingBatched(
+            fn (FluentPendingBatch $assert) => $assert->has(AJob::class)
+                ->has(BJob::class)
+                ->etc()
         );
     }
 
@@ -615,20 +632,21 @@ class FluentPendingBatchTest extends TestCase
 
         Bus::batch([
             [
-                new AJob,
-                new BJob,
+                new AJob(),
+                new BJob(),
             ],
-            new CJob,
+            new CJob(),
             [
-                new CJob,
-                new DJob,
+                new CJob(),
+                new DJob(),
             ],
         ])->dispatch();
 
-        BusFacade::assertPendingBatched(fn (FluentPendingBatch $assert) => $assert->first(fn (FluentPendingBatch $assert) => $assert->has(AJob::class)
-            ->has(BJob::class))
-            ->nth(1, fn (FluentPendingBatch $assert) => $assert->has(CJob::class))
-            ->etc()
+        BusFacade::assertPendingBatched(
+            fn (FluentPendingBatch $assert) => $assert->first(
+                fn (FluentPendingBatch $assert) => $assert->has(AJob::class)
+                    ->has(BJob::class)
+            )->nth(1, fn (FluentPendingBatch $assert) => $assert->has(CJob::class))->etc()
         );
     }
 
@@ -638,24 +656,27 @@ class FluentPendingBatchTest extends TestCase
 
         Bus::batch([
             [
-                new AJob,
-                new BJob,
+                new AJob(),
+                new BJob(),
             ],
-            new CJob,
+            new CJob(),
             [
-                new CJob,
-                new DJob,
+                new CJob(),
+                new DJob(),
             ],
         ])->dispatch();
 
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage('There are no additional jobs in the batch.');
 
-        BusFacade::assertPendingBatched(fn (FluentPendingBatch $assert) => $assert->first(fn (FluentPendingBatch $assert) => $assert->has(AJob::class)
+        BusFacade::assertPendingBatched(
+            fn (FluentPendingBatch $assert) => $assert->first(fn (FluentPendingBatch $assert) => $assert->has(AJob::class)
             ->has(BJob::class))
             ->nth(1, fn (FluentPendingBatch $assert) => $assert->has(CJob::class))
-            ->nth(2, fn (FluentPendingBatch $assert) => $assert->has(CJob::class)
-                ->has(DJob::class)
+            ->nth(
+                2,
+                fn (FluentPendingBatch $assert) => $assert->has(CJob::class)
+                    ->has(DJob::class)
             )->etc()
         );
     }
@@ -673,25 +694,35 @@ trait Parameterable
 
 class AJob
 {
-    use Queueable, Batchable, Parameterable;
+    use Queueable;
+    use Batchable;
+    use Parameterable;
 }
 
 class BJob
 {
-    use Queueable, Batchable, Parameterable;
+    use Queueable;
+    use Batchable;
+    use Parameterable;
 }
 
 class CJob
 {
-    use Queueable, Batchable, Parameterable;
+    use Queueable;
+    use Batchable;
+    use Parameterable;
 }
 
 class DJob
 {
-    use Queueable, Batchable, Parameterable;
+    use Queueable;
+    use Batchable;
+    use Parameterable;
 }
 
 class EJob
 {
-    use Queueable, Batchable, Parameterable;
+    use Queueable;
+    use Batchable;
+    use Parameterable;
 }

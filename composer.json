@@ -22,9 +22,11 @@
     "require-dev": {
         "laravel/framework": "^11.35",
         "phpunit/phpunit": "^11.5",
-        "orchestra/testbench-core": "^9.8"
+        "orchestra/testbench-core": "^9.8",
+        "friendsofphp/php-cs-fixer": "^3.65"
     },
     "scripts": {
-        "test": "./vendor/bin/phpunit"
+        "test": "./vendor/bin/phpunit",
+        "lint": "./vendor/bin/php-cs-fixer fix"
     }
 }

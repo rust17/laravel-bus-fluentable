@@ -2,9 +2,8 @@
 
 namespace Circle33\LaravelBusFluentable;
 
-use Circle33\LaravelBusFluentable\FluentPendingBatch;
-use Illuminate\Support\Testing\Fakes\BusFake;
 use Illuminate\Contracts\Bus\Dispatcher;
+use Illuminate\Support\Testing\Fakes\BusFake;
 use PHPUnit\Framework\Assert as PHPUnit;
 
 class Bus
