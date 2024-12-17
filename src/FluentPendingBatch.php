@@ -13,7 +13,7 @@ class FluentPendingBatch extends PendingBatchFake
     /**
      * The jobs that have been checked.
      *
-     * @var array
+     * @var array<string>
      */
     protected $expected = [];
 
@@ -21,7 +21,7 @@ class FluentPendingBatch extends PendingBatchFake
      * Assert that the batch contains a job of the given type.
      *
      * @param  string|int  $expectedJob
-     * @param  array  $expectedParameters
+     * @param  array<mixed>  $expectedParameters
      * @return $this
      */
     public function has(string|int $expectedJob, array $expectedParameters = [])
@@ -70,7 +70,7 @@ class FluentPendingBatch extends PendingBatchFake
     /**
      * Assert that the batch contains all of the given jobs.
      *
-     * @param  array  $expectedJobs
+     * @param  array<string>  $expectedJobs
      * @return $this
      */
     public function hasAll(array $expectedJobs)
@@ -89,7 +89,7 @@ class FluentPendingBatch extends PendingBatchFake
     /**
      * Assert that the batch does not contain any of the given jobs.
      *
-     * @param  array  $unexpectedJobs
+     * @param  array<string>  $unexpectedJobs
      * @return $this
      */
     public function missingAll(array $unexpectedJobs)
@@ -108,7 +108,7 @@ class FluentPendingBatch extends PendingBatchFake
     /**
      * Assert that the batch contains any of the given jobs.
      *
-     * @param  array  $expectedJobs
+     * @param  array<string>  $expectedJobs
      * @return $this
      */
     public function hasAny(...$expectedJobs)
@@ -163,7 +163,7 @@ class FluentPendingBatch extends PendingBatchFake
      *
      * @param  int  $index
      * @param  Closure  $callback
-     * @param  array  $parameters
+     * @param  array<mixed>  $parameters
      * @return $this
      */
     public function nth(int $index, Closure|string $callback, array $parameters = [])
@@ -214,7 +214,7 @@ class FluentPendingBatch extends PendingBatchFake
     /**
      * Assert that the batch contains exactly the given jobs with the specified parameters.
      *
-     * @param  array  $expectedJobs
+     * @param  array<string, array<mixed>>  $expectedJobs
      * @return $this
      */
     public function equal(array $expectedJobs)
@@ -294,7 +294,7 @@ class FluentPendingBatch extends PendingBatchFake
      *
      * @param  mixed  $actual
      * @param  string  $expectedClass
-     * @param  array  $expectedParameters
+     * @param  array<mixed>  $expectedParameters
      * @return bool
      */
     protected function parametersMatch($actual, string $expectedClass, array $expectedParameters)
