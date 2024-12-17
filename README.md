@@ -1,3 +1,9 @@
+# Laravel Bus Fluentable
+
+[![PHPUnit](https://github.com/rust17/laravel-bus-fluentable/actions/workflows/phpunit.yml/badge.svg)](https://github.com/rust17/laravel-bus-fluentable/actions/workflows/phpunit.yml)
+[![Static Analysis](https://github.com/rust17/laravel-bus-fluentable/actions/workflows/phpstan.yml/badge.svg)](https://github.com/rust17/laravel-bus-fluentable/actions/workflows/phpstan.yml)
+[![Check Style](https://github.com/rust17/laravel-bus-fluentable/actions/workflows/php-cs-fixer.yml/badge.svg)](https://github.com/rust17/laravel-bus-fluentable/actions/workflows/php-cs-fixer.yml)
+
 When using Laravel, the current approach to testing batched jobs, as shown below, is somewhat unconventional:
 
 ```

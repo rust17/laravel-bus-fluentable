@@ -21,7 +21,7 @@ class Bus
 
         PHPUnit::assertTrue(
             collect($busFake->dispatchedBatches())
-                ->filter(fn ($batch) =>$callback(new FluentPendingBatch($busFake, $batch->jobs)))
+                ->filter(fn ($batch) => $callback(new FluentPendingBatch($busFake, $batch->jobs)))
                 ->isNotEmpty(),
             "The expected batch was not dispatched."
         );
