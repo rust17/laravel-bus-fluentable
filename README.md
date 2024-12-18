@@ -4,6 +4,7 @@
 
 # Laravel Bus Fluentable
 
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/circle33/laravel-bus-fluentable.svg?style=flat-circle)](https://packagist.org/packages/circle33/laravel-bus-fluentable)
 [![PHPUnit](https://github.com/rust17/laravel-bus-fluentable/actions/workflows/phpunit.yml/badge.svg)](https://github.com/rust17/laravel-bus-fluentable/actions/workflows/phpunit.yml)
 [![Static Analysis](https://github.com/rust17/laravel-bus-fluentable/actions/workflows/phpstan.yml/badge.svg)](https://github.com/rust17/laravel-bus-fluentable/actions/workflows/phpstan.yml)
 [![Check Style](https://github.com/rust17/laravel-bus-fluentable/actions/workflows/php-cs-fixer.yml/badge.svg)](https://github.com/rust17/laravel-bus-fluentable/actions/workflows/php-cs-fixer.yml)
@@ -17,6 +18,11 @@ Bus::assertBatched(fn (PendingBatchFake $batchedCollection) =>
 ```
 
 This package introduces some helper functions to enhance the testability of batched jobs. Inspired by [fluent JSON testing](https://laravel.com/docs/11.x/http-tests#fluent-json-testing), these methods provide a more streamlined and readable approach to testing job batches within the Laravel application. The goal is to improve developer experience by offering clear, concise methods with illustrative examples.
+
+## Installation
+```sh
+composer require --dev circle33/laravel-bus-fluentable
+```
 
 ## Documentation
 
