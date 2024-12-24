@@ -20,9 +20,9 @@
     ],
     "minimum-stability": "stable",
     "require-dev": {
-        "laravel/framework": "^11.35",
-        "phpunit/phpunit": "^11.5",
-        "orchestra/testbench-core": "^9.8",
+        "laravel/framework": "^11.20.0",
+        "phpunit/phpunit": "^10.5|^11.0",
+        "orchestra/testbench-core": "^9.1.5",
         "friendsofphp/php-cs-fixer": "^3.65",
         "phpstan/phpstan": "^2.0"
     },
