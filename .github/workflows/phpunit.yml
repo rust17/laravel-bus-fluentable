@@ -12,10 +12,10 @@ jobs:
         laravel_version: [10.*, 11.*]
         stability: [prefer-lowest, prefer-stable]
         include:
-          - laravel: 10.*
-            testbench-core: ^8.0
-          - laravel: 11.*
-            testbench-core: ^9.0
+          - laravel_version: 10.*
+            testbench-core-version: ^8.0
+          - laravel_version: 11.*
+            testbench-core-version: ^9.0
 
     name: PHP-${{ matrix.php_version }} - LARAVEL${{ matrix.laravel_version }} - ${{ matrix.stability }}
 
@@ -30,7 +30,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          composer require "laravel/framework:${{ matrix.laravel_version }}" "orchestra/testbench-core:${{ matrix.testbench-core }}" --dev --no-interaction --no-update
+          composer require "laravel/framework:${{ matrix.laravel_version }}" "orchestra/testbench-core:${{ matrix.testbench-core-version }}" --dev --no-interaction --no-update
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
       - name: Run PHPUnit
