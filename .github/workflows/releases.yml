@@ -1,0 +1,43 @@
+name: Release Package
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    name: Release v${{ inputs.version }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Remove optional "v" prefix
+        id: version
+        run: |
+          echo "version=${VERSION#v}" >> "$GITHUB_OUTPUT"
+        env:
+          VERSION: ${{ inputs.version }}
+
+      - name: Remove unnecessary files
+        run: |
+          find . -maxdepth 1 -not -path "./src" -not -path "./composer.json" -not -path "./LICENSE.md" -not -path "./README.md" -not -path "." -print0 | xargs -0 rm -rf
+
+      - name: Git add
+        run: git add .
+
+      - name: Git commit
+        run: git commit -m "v${{ steps.version.outputs.version }}"
+
+      - name: Git tag
+        run: git tag v${{ steps.version.outputs.version }}
+
+      - name: Git push tags
+        run: git push origin v${{ steps.version.outputs.version }}
