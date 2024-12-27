@@ -20,10 +20,21 @@ class Bus
         $busFake = app(Dispatcher::class);
 
         PHPUnit::assertTrue(
-            collect($busFake->dispatchedBatches())
+            collect(self::getDispatchedBatches())
                 ->filter(fn ($batch) => $callback(new FluentPendingBatch($busFake, $batch->jobs)))
                 ->isNotEmpty(),
             "The expected batch was not dispatched."
         );
+    }
+
+    /**
+     * Get all the batches that have been dispatched.
+     *
+     * @return array<\Illuminate\Support\Testing\Fakes\PendingBatchFake>
+     */
+    private static function getDispatchedBatches()
+    {
+        /** @phpstan-ignore variable.undefined */
+        return (fn () => $this->batches)->bindTo(app(Dispatcher::class), BusFake::class)();
     }
 }
