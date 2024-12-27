@@ -3,7 +3,6 @@
 namespace Circle33\LaravelBusFluentable;
 
 use Closure;
-use Illuminate\Support\Number;
 use Illuminate\Support\Testing\Fakes\PendingBatchFake;
 use PHPUnit\Framework\Assert as PHPUnit;
 use Throwable;
@@ -184,7 +183,7 @@ class FluentPendingBatch extends PendingBatchFake
             } catch (Throwable $e) {
                 throw new $e(sprintf(
                     'The [%s] one in the batch does not matches the given callback: %s',
-                    Number::ordinal($index, 'en'),
+                    number_ordinal($index, 'en'),
                     $e->getMessage()
                 ));
             }
@@ -242,7 +241,7 @@ class FluentPendingBatch extends PendingBatchFake
                 } catch (Throwable $e) {
                     throw new $e(sprintf(
                         'The [%s] one in the batch at index [%s] does not match: %s',
-                        Number::ordinal($nth, 'en'),
+                        number_ordinal($nth, 'en'),
                         $index,
                         $e->getMessage()
                     ));

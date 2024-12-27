@@ -10,7 +10,10 @@
     "autoload": {
         "psr-4": {
             "Circle33\\LaravelBusFluentable\\": "src/"
-        }
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     },
     "authors": [
         {
@@ -20,9 +23,9 @@
     ],
     "minimum-stability": "stable",
     "require-dev": {
-        "laravel/framework": "^11.20.0",
-        "phpunit/phpunit": "^10.5|^11.0",
-        "orchestra/testbench-core": "^9.1.5",
+        "laravel/framework": "10.*|11.*",
+        "orchestra/testbench-core": "^8.0|^9.0",
+        "phpunit/phpunit": "^10.0",
         "friendsofphp/php-cs-fixer": "^3.65",
         "phpstan/phpstan": "^2.0"
     },
