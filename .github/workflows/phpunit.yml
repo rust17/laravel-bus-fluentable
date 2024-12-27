@@ -9,11 +9,15 @@ jobs:
     strategy:
       matrix:
         php_version: [8.1, 8.2, 8.3]
-        prefer:
-          - stable
-          - lowest
+        laravel_version: [10.*, 11.*]
+        stability: [prefer-lowest, prefer-stable]
+        include:
+          - laravel: 10.*
+            testbench-core: ^8.0
+          - laravel: 11.*
+            testbench-core: ^9.0
 
-    name: PHP-${{ matrix.php_version }}-${{ matrix.prefer }}
+    name: PHP-${{ matrix.php_version }} - LARAVEL${{ matrix.laravel_version }} - ${{ matrix.stability }}
 
     steps:
       - name: Checkout code
@@ -25,7 +29,9 @@ jobs:
           php-version: ${{ matrix.php }}
 
       - name: Install dependencies
-        run: composer install --prefer-dist --no-interaction --no-progress
+        run: |
+          composer require "laravel/framework:${{ matrix.laravel_version }}" "orchestra/testbench-core:${{ matrix.testbench-core }}" --dev --no-interaction --no-update
+          composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
       - name: Run PHPUnit
         run: vendor/bin/phpunit
