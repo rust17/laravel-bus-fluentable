@@ -28,7 +28,7 @@ jobs:
 
       - name: Remove unnecessary files
         run: |
-          find . -maxdepth 1 -not -path "./src" -not -path "./composer.json" -not -path "./LICENSE.md" -not -path "./README.md" -not -path "." -print0 | xargs -0 rm -rf
+          find . -maxdepth 1 -not -path "./src" -not -path "./.git" -not -path "./composer.json" -not -path "./LICENSE.md" -not -path "./README.md" -not -path "." -print0 | xargs -0 rm -rf
 
       - name: Git commit
         uses: stefanzweifel/git-auto-commit-action@v5
